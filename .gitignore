@@ -1,0 +1,4 @@
+node_modules/
+.yarn/
+__pycache__/
+venv/
