@@ -11,8 +11,8 @@ def index():
    print("Hello Painful world")
    return "<p> Hello World </p>"
 
-@app.route("/concatenate", methods=["POST"])
-def concatenate():
+@app.route("/get_advice", methods=["POST"])
+def get_advice():
  
   data = request.get_json()
   result = data.get("result")

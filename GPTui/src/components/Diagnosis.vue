@@ -213,7 +213,7 @@ export default {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ result: patientDiagnosis }),
         };
-          fetch("http://localhost:5000/concatenate", requestOptions)
+          fetch("http://localhost:5000/get_advice", requestOptions)
           .then((response) => response.text())
           .then((data) => (this.patientReport = data));
         }
