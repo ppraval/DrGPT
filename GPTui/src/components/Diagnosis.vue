@@ -112,12 +112,10 @@
         </v-container>
       </v-form>
       <div class="text-center">
+        <v-btn color="primary" @click = "getDiagnosis()">
+           Submit
+        </v-btn>
         <v-dialog v-model="dialog" width="auto">
-          <template v-slot:activator="{ props }">
-            <v-btn color="primary" v-bind="props" @click = "getDiagnosis()">
-              Submit
-            </v-btn>
-          </template>  
             <v-card>
               <v-card-text>
                 <div v-if="patientReport == ''" class="text-center">
@@ -205,6 +203,7 @@ export default {
     }),
     methods: {
       getDiagnosis () {
+        this.dialog = true;
         this.patientReport='';
         this.symptoms= `Respiratory symptoms are ${this.ailmentRespiratory != '' ? this.ailmentRespiratory : "None"}, Skin symptoms are ${this.ailmentSkin != '' ? this.ailmentSkin : "None"}, Digestive symptoms are ${this.ailmentDigestive != '' ? this.ailmentDigestive : "None"}, Ear symptoms are ${this.ailmentEar != '' ? this.ailmentEar : "None"}, Eye symptoms are ${this.ailmentEye != '' ? this.ailmentEye : "None"}`
         let patientDiagnosis = `I am ${this.firstname} ${this.lastname} an ${this.age} year old ${this.sex} of height ${this.height}cm and of weight ${this.weight}kg, I am allergic to ${this.allergies}, addicted to ${this.addiction} with a frequency of ${this.frequencyAddiction} and have been previously diagnosed with ${this.disease}. I currently am suffering from the following ${this.symptoms}` ;
