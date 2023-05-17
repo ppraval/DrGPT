@@ -1,8 +1,8 @@
 <template>
   <v-container class="fill-height">
     <v-responsive class="d-flex align-center text-center fill-height">
-      <v-img contain height="300" src="@/assets/drGPT.jpg"/> 
-      <h1 class="text-h2 font-weight-bold" style="margin-top: -46px; position: relative;">Dr. GPT</h1>
+      
+      <h3 class="text-h3 font-weight-bold" style="margin: 5px;">Your Symptoms</h3>
 
     
       <v-form v-model="valid">
@@ -115,17 +115,21 @@
         <v-btn color="primary" @click = "getDiagnosis()">
            Submit
         </v-btn>
-        <v-dialog v-model="dialog" width="auto">
+        <v-dialog v-model="dialog" persistent width="auto">
             <v-card>
               <v-card-text>
                 <div v-if="patientReport == ''" class="text-center">
-                  <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                  <div>(Avg. Waiting time is 2 minutes)</div>
-                </div>
+                    <div> <v-img contain height="30" src="@/assets/openailogo.jpeg"/> ChatGPT is analysing your symptoms </div>
+                <br/><v-progress-circular indeterminate color="primary"></v-progress-circular>
+                    <div>(Analysing may take upto 45 seconds ) </div>
+                  </div>
                 <div v-if="patientReport != ''" v-html="patientReport"></div>
+                <!-- {{ practo }} -->
               </v-card-text>
-                <v-card-actions v-if="patientReport != ''">
-                  <v-btn color="primary" block @click=" dialog = false">Close</v-btn>
+                <v-card-actions class="justify-right">
+                  <v-btn color="primary" v-if="patientReport != ''" :href="practo" target="_blank">Book Appointment</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" @click=" dialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -200,13 +204,23 @@ export default {
       symptoms:'',
       dialog: false,
       patientReport: '',
+      city: 'Banglore',
+      specialist: 'Gynacologist',
+      practo: '',   
+     
     }),
     methods: {
       getDiagnosis () {
         this.dialog = true;
+        if (this.Ailments == 'has respiratory') {this.specialist = `Pulmonologist`;}
+        if (this.Ailments == 'has skin') {this.specialist = `Dermatologist`;}
+        if (this.Ailments == 'has digestive') {this.specialist = `Gastroenterologist`;}
+        if (this.Ailments == 'has eye') {this.specialist = `Ophthalmologist`;}
+        if (this.Ailments == 'has ear') {this.specialist = `ENT specialist`;}
         this.patientReport='';
         this.symptoms= `Respiratory symptoms are ${this.ailmentRespiratory != '' ? this.ailmentRespiratory : "None"}, Skin symptoms are ${this.ailmentSkin != '' ? this.ailmentSkin : "None"}, Digestive symptoms are ${this.ailmentDigestive != '' ? this.ailmentDigestive : "None"}, Ear symptoms are ${this.ailmentEar != '' ? this.ailmentEar : "None"}, Eye symptoms are ${this.ailmentEye != '' ? this.ailmentEye : "None"}`
-        let patientDiagnosis = `I am ${this.firstname} ${this.lastname} an ${this.age} year old ${this.sex} of height ${this.height}cm and of weight ${this.weight}kg, I am allergic to ${this.allergies}, addicted to ${this.addiction} with a frequency of ${this.frequencyAddiction} and have been previously diagnosed with ${this.disease}. I currently am suffering from the following ${this.symptoms}` ;
+        let patientDiagnosis = `I am ${this.firstname} ${this.lastname} an ${this.age} year old ${this.sex} of height ${this.height} cm and of weight ${this.weight}kg, I am allergic to ${this.allergies}, addicted to ${this.addiction} with a frequency of ${this.frequencyAddiction} and have been previously diagnosed with ${this.disease}. I currently am suffering from the following ${this.symptoms}` ;
+        this.practo = `https://www.practo.com/search/doctors?results_type=doctor&q=%5B%7B"word"%3A"${this.specialist}"%2C"autocompleted"%3Atrue%2C"category"%3A"subspeciality"%7D%5D&city=Bangalore`
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -218,27 +232,28 @@ export default {
         }
       
     },
-    // beforeMount: function () {
-    //   this.firstname = 'Gun';
-    //   this.lastname = 'Boom';
-    //   this.age = '19';
-    //   this.height = '170';
-    //   this.weight = '90';
-    //   this.sex = 'male';
-    //   this.hasAllergies = 'have allergies';
-    //   this.allergies = 'Peanut and Pollen';
-    //   this.disease = 'Diabetes A';
-    //   this.hasDisease = 'have diseases';
-    //   this.addiction = 'Smoking';
-    //   this.hasAddiction = 'have addiction';
-    //   this.frequencyAddiction = 'One per day';
-    //   this.Ailments = 'has respiratory';
-    //   this.ailmentRespiratory = 'Dry Cough';
-    //   this.ailmentSkin = '';
-    //   this.ailmentDigestive = '';
-    //   this.ailmentEar = '';
-    //   this.ailmentEye = '';
-    // }
+
+    beforeMount: function () {
+      this.firstname = 'Gun';
+      this.lastname = 'Boom';
+      this.age = '19';
+      this.height = '170';
+      this.weight = '90';
+      this.sex = 'male';
+      this.hasAllergies = 'have allergies';
+      this.allergies = 'Peanut and Pollen';
+      this.disease = 'Diabetes A';
+      this.hasDisease = 'have diseases';
+      this.addiction = 'Smoking';
+      this.hasAddiction = 'have addiction';
+      this.frequencyAddiction = 'One per day';
+      this.Ailments = 'has respiratory';
+      this.ailmentRespiratory = 'Dry Cough';
+      this.ailmentSkin = '';
+      this.ailmentDigestive = '';
+      this.ailmentEar = '';
+      this.ailmentEye = '';
+    }
   }
 
 </script>
